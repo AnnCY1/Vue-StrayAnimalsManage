@@ -7,7 +7,7 @@
           <navigate/>
 
         </el-aside>
-    <el-container class="wrap2">
+      <el-container class="wrap2">
       <el-header class="headerWrap">
         
         <Header/>
@@ -15,11 +15,12 @@
       </el-header>
 
         <el-main>
-          <router-view></router-view>
+          <router-view></router-view>    
         </el-main>
 
       </el-container>
     </el-container>
+
   </div>
 </template>
 
@@ -47,18 +48,20 @@ export default {
 }
 
 .wrap1{
+  
   height: 100%;
   background-color: #545c64;
   aside{
     height: 100%;
     overflow: hidden;
   }
-}
-
-.wrap2{
+  .wrap2{
     .headerWrap{
       padding: 0px;
     }
+    
+}
+
   
   main{
     padding: 0px;

@@ -1,20 +1,24 @@
 <template>
   <div class="header">
+
       <div class="leftContainer">
-          <div>
-              <el-button type ="primary" icon ="el-icon-d-arrow-left" class="btn"></el-button>
-          </div>
-      </div>
-       <div class="navContainer">
+             
               <!-- 面包屑导航 -->
             <el-breadcrumb separator-class="el-icon-arrow-right" class="breadNav">
-                <el-breadcrumb-item  v-for="item in this.routeLog" :key="item.path" :to="{ name: 'item.name' }">{{item.label}}</el-breadcrumb-item>
+
+                <el-breadcrumb-item  
+                v-for="item in this.routeLog" 
+                :key="item.path" 
+                :to="{ name: 'item.name' }">{{item.label}}</el-breadcrumb-item>
+
             </el-breadcrumb>
         </div>
+
         <div class="rightContainer">
             <el-dropdown @command="handleCommand">
+                
             <span class="el-dropdown-link">
-                <img src="C:\Users\Administrator\Desktop\前端学习资料\Project\vue_animals\src\assets\userIcon1.png">
+                <img :src="userImg"   alt="用户头像">
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="a">登出</el-dropdown-item>
@@ -22,6 +26,7 @@
             </el-dropdown-menu>
             </el-dropdown>
         </div>
+
   </div>
 </template>
 
@@ -30,7 +35,8 @@
     export default {
         data(){
             return{
-               
+                // 不用require写法会报错
+               userImg: require ("../assets/userIcon1.png"),
                 routeLog:[
                     {
                         name:"home",
@@ -57,19 +63,33 @@
 <style lang="less" scoped>
 
 .header{
+    position: relative;
     width: 100%;
-    height: 150px;
+    height: 100px;
     overflow: hidden;
     padding: 0px;
     background-color:  lightskyblue;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
     .leftContainer{
-        width: 50px;
-    }
-    .breadNav{
-           
+        display: flex;
+        align-items: center;
+        .breadNav{
+            margin-left: 50px;
             font-size: 20px;
             color: black;
         }
+     }
+    .rightContainer{
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        img{
+            border-radius: 50%;
+            width:80px;
+        }
+    }
   }
     
 </style>
