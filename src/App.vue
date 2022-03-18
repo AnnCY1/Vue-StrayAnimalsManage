@@ -50,10 +50,11 @@ export default {
 .wrap1{
   
   height: 100%;
-  background-color: #545c64;
+  
   aside{
     height: 100%;
     overflow: hidden;
+    background-color: #545c64;
   }
   .wrap2{
     .headerWrap{
@@ -61,8 +62,6 @@ export default {
     }
     
 }
-
-  
   main{
     padding: 0px;
     width: 100%;

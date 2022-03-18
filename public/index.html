@@ -19,6 +19,21 @@
         margin: 0px;
         padding: 0px;
       }
+      .el-card__body{
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-rows: 50% 30% 20%;
+        grid-template-columns: 33% 33% 33%;
+        grid-template-areas: "userImg userInfo userLv"
+                             "change1 change2 change3"
+                             "date date date";
+        justify-items: center;
+        align-items: center;
+        padding: 0px!important;
+        
+    }
+   
     </style> 
     <!--  注意使用eleUI自带的边距是在index.html里面的body里引起的 不能在APP组件里面调整样式 -->
   <!-- 从零开始一个项目：
