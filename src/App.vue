@@ -20,7 +20,7 @@
 
       </el-container>
     </el-container>
-
+   <table/>
   </div>
 </template>
 
@@ -28,11 +28,25 @@
 
 import Navigate from "./components/Navigate";
 import Header from "./components/Header";
+import table from "./components/Table.vue"
+
 
 
 export default {
   name: 'App',
-  components: {Navigate,Header},
+  components: {Navigate,Header,table},
+  data(){
+    return{
+       tableData: [
+                {
+                date: "2016-05-02",
+                detail: "王小虎",
+                points: "+1",
+                },
+            ],
+            tableLabel:["日期","详情","积分"]
+    }
+  },
   methods:{
     show(){
       console.log("11");
