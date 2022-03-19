@@ -19,8 +19,8 @@
                 </span>
             </div> 
             <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">登出</el-dropdown-item>
-                <el-dropdown-item command="b">个人中心</el-dropdown-item>
+                <el-dropdown-item command="a" @click.native="logout">登出</el-dropdown-item>
+                <el-dropdown-item command="b" @click.native="toUserCenter">个人中心</el-dropdown-item>
             </el-dropdown-menu>
             </el-dropdown>
 
@@ -28,12 +28,12 @@
 </template>
 
 <script>
-
     export default {
         data(){
             return{
                 // 不用require写法会报错
                userImg: require ("../assets/userIcon1.png"),
+            //    记录的是用户访问记录 用push来触发
                 routeLog:[
                     {
                         name:"home",
@@ -48,6 +48,13 @@
         methods:{
             routelog(name,path,label){
                 this.routeLog.push({name,path,label})
+            },
+            logout(){
+                this.$router.push({name:"login"})
+                this.$bus.$emit("logout")
+            },
+            toUserCenter(){
+                this.$router.push({name:"userCenter"})
             }
         }
     }

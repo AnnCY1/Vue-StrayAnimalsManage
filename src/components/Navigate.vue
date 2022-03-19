@@ -68,6 +68,13 @@ export default {
           icon:"el-icon-edit-outline",
           url: "",
         },
+         {
+          name: "userCenter",
+          label: "个人中心",
+          path: "/userCenter",
+          icon:"el-icon-setting",
+          url: "",
+        },
         {
           name: "animalInfo",
           label: "统计信息",
@@ -128,13 +135,7 @@ export default {
               }
           ]
         },
-        {
-          name: "userInfo",
-          label: "个人中心",
-          path: "/userInfo",
-          icon:"el-icon-setting",
-          url: "",
-        },
+       
       ],
     };
   },

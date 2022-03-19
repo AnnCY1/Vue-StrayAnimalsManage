@@ -1,6 +1,6 @@
 <template>
-  <!-- 这是echarts的展示区域 需要定义一个宽高 -->
 
+  <!-- 这是echarts的展示区域 需要定义一个宽高 -->
   <div ref="echartsArea"></div>
 </template>
 
@@ -138,6 +138,7 @@ export default {
         this.pieChartOption.series = this.chartData.series;
       }
     },
+  
   },
 };
 </script>

@@ -1,25 +1,23 @@
 <template>
   <div id="app">
-    <el-container class="wrap1">
+    <el-container class="wrap1" >
       <!-- 先引入布局container 再引入导航 -->
-        <el-aside width="200px">
+        <el-aside width="200px" v-if="hadLogin">
         <!-- 导航栏组件 -->
           <navigate/>
 
         </el-aside>
       <el-container class="wrap2">
-      <el-header class="headerWrap">
+      <el-header class="headerWrap" v-if="hadLogin">
         
         <Header/>
         
       </el-header>
-
         <el-main>
-       
           <router-view></router-view>    
         </el-main>
-
       </el-container>
+
     </el-container>
   
   </div>
@@ -39,15 +37,22 @@ export default {
   components: {Navigate,Header},
   data(){
     return{   
+      hadLogin:true
     }
   },
   methods:{
-    show(){
-      console.log("11");
+    logout(){
+      this.hadLogin = !this.hadLogin
+      if(this.hadLogin){
+         this.$router.push({name:"userCenter"})
+      }
     }
   },
    mounted(){
-    
+     this.$bus.$on("logout",this.logout)
+   },
+   beforeDestory(){
+     this.$bus.$on("logout")
    }
 }
 

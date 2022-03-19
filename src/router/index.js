@@ -1,21 +1,26 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../pages/Home.vue";
-import userInfo from "../pages/userInfo";
-
+import UserCenter from "../pages/UserCenter";
+import Login from "../components/Login"
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-        name:"Home",
+        name:"home",
         path:"/",
         component:Home,
     },
     {
-        name:"userInfo",
-        path:"/useInfo",
-        component:userInfo
+        name:"userCenter",
+        path:"/useCenter",
+        component:UserCenter
+    },
+    {
+        name:"login",
+        path:"/login",
+        component:Login
     }
     
 ]
