@@ -68,39 +68,45 @@
         </div>
       </el-col>
 
-    <!--柱状图  周积分-->
+      <!--柱状图  周积分-->
       <el-col :span="6">
         <div class="grid-content r1c2">
-          <el-card shadow="hover" class="barCard"> 
-            <my-echarts  :chartData = "this.weekPoints" :isBarChart="true"></my-echarts>
-           
-             </el-card>
-        </div></el-col
-      >
-    <!-- 饼状图  现有积分占比 -->
+          <el-card shadow="hover" class="barCard">
+            <my-echarts
+              :chartData="this.weekPoints"
+              :isBarChart="true"
+            ></my-echarts>
+          </el-card></div
+      ></el-col>
+      <!-- 饼状图  现有积分占比 -->
       <el-col :span="6">
         <div class="grid-content r1c3">
           <el-card shadow="hover">
-
-             <my-echarts  :chartData = "this.piePoints" :isBarChart="false"></my-echarts>
-
+            <my-echarts
+              :chartData="this.piePoints"
+              :isBarChart="false"
+            ></my-echarts>
           </el-card>
         </div>
       </el-col>
     </el-row>
 
     <el-row :gutter="40" class="row2">
-       <!-- 表格 -->
+      <!-- 表格 -->
       <el-col :span="8">
-        <commontable/>
+        <commontable />
       </el-col>
 
       <!-- 折线图 -->
       <el-col :span="12">
-        <div class="grid-content bg-purple r2c2">折线图</div>
+        <div class="grid-content r2c2">
+          <my-echarts
+              :chartData="this.monthPoints"
+              class="lineChart"
+            ></my-echarts>
+        </div>
       </el-col>
     </el-row>
-    
   </div>
 </template>
 
@@ -192,12 +198,12 @@ export default {
                     },
             // 图表种类数据 有几种柱子/有几种折线 (一种就一个对象) 数量分别是多少
             series: [
-                    {
-                    name: '积分',
-                    type: 'bar',
-                    data: [5, 21, 16, 10]
-                    }
-                ]
+              {
+                name: '积分',
+                type: 'bar',
+                data: [5, 21, 16, 10]
+              }
+                    ]
             },
       // 积分占比
         piePoints:{
@@ -216,6 +222,24 @@ export default {
                 radius: ['20%', '50%']
                }
              ]
+        },
+      // 积分月报
+        monthPoints:{
+            title: {
+                    text: '积分月报'
+                    },
+            xAxis: {
+              
+              data: ['一月', '二月', '三月']
+            },
+           
+            series: [
+              {
+                data: [12, 20, 15],
+                type: 'line'
+              }
+            ]
+          
         }
     };
   },
@@ -296,7 +320,7 @@ export default {
 .r1c1 {
   width: 520px;
   height: 400px;
-  .userCard{
+  .userCard {
     width: 100%;
     height: 100%;
     .el-button + .el-button {
@@ -347,32 +371,27 @@ export default {
 }
 
 .r1c2 {
- 
   height: 400px;
-  .el-card{
+  .el-card {
     width: 100%;
     height: 100%;
   }
-  
 }
 .r1c3 {
-
   height: 100%;
-  .el-card{
+  .el-card {
     width: 100%;
     height: 100%;
   }
 }
 
-.r2c1 {
+.r2c2{
   height: 400px;
+
+  .lineChart{
+    width: 100%;
+    height: 100%;
+  }
 }
-.r3c1 {
-  background-color: gray;
-  height: 400px;
-}
-.r3c2 {
-  background-color: gray;
-  height: 400px;
-}
+
 </style>

@@ -25,7 +25,11 @@ export default {
         // 至少要传过来一个xAxis对象和series数组 并由对象将他们俩包裹
         return {
           xAxis: {
+            type:"false",
             data: ["x轴名称1", "x轴名称2"],
+          },
+          yAxis:{
+            type:"false"
           },
           series: [
             {
@@ -35,6 +39,7 @@ export default {
             },
           ],
         };
+
       },
     },
   },
@@ -46,17 +51,19 @@ export default {
         // 标题名称
         title: {
           text: "积分周表",
-          left: "center"
+          
         },
         // hover提示
         tooltip: {},
         // x轴数据 这个数据应该是由其他组件传过来
-        xAxis: {},
+        xAxis: { type:null ,data:[]},
         // y轴数据
-        yAxis: {},
+        yAxis: { type:null},
         // 图表种类数据 有几种柱子/有几种折线 (一种就一个对象) 数值分别是多少 应该由其他组件传过来
-        series: [],
+        series: [{type: "pie",
+                  data: [],}],
       },
+     
       // 饼状图Option示例
       pieChartOption: {
         title: {
@@ -90,7 +97,7 @@ export default {
       immediate: true,
       deep: true,
       handler: function () {
-        console.log("数据变化了！");
+        
         // 如果数据发生变化了，再绘制一遍图表
         // 新建一个promise对象 防止在Dom出现之前 echarts就已经执行了初始化操作
         let p = new Promise((resolve) => {
@@ -107,7 +114,7 @@ export default {
     paintChart() {
       // 渲染绘制echarts图表之前先准备好数据
       this.initChartData();
-
+        
       //  再判断一下有没有被初始化过
       if (this.myEcharts) {
         // 如果echarts已经被初始化过了，就直接进行渲染
@@ -124,6 +131,8 @@ export default {
       if (this.isBarChart) {
         this.barChartOption.title = this.chartData.title;
         this.barChartOption.xAxis.data = this.chartData.xAxis.data;
+
+        
         this.barChartOption.series = this.chartData.series;
       } else {
         this.pieChartOption.series = this.chartData.series;
