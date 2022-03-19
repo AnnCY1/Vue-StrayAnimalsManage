@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" style="width: 100%">
+  <el-table :data="tableData" style="width: 100% ">
 
       <!-- v-for循环一个对象，value对应属性值，key对应键名（属性名） -->
       <!-- v-for循环一个数组 value对应属性值,index对应下标 -->
@@ -10,12 +10,12 @@
 </template>
 
 
-// Table组件无法引入，只能是手动把模板结构和数据带到展示页（userInfo.vue）使用 所以这个组件其实是没有用上的
-
+// Table组件无法引入的原因可能是table组件名和html标签名重复了，如果是的话会有报错提醒，或者是components拼错了，
+手动把模板结构和数据带到展示页（userInfo.vue）使用 
 
 <script>
     export default {
-    name: "Table",
+    name: "CommonTable",
     data() {
         return {
            tableData: [
@@ -56,7 +56,9 @@
 </script>
 
 <style lang= "less" scoped>
-    .el-table__body-wrapper{
-        overflow: hidden;
+
+/* 这一句只有在index.html里面才能生效  如果是*/
+    .el-table--scrollable-x  div.el-table__body-wrapper{
+        overflow: hidden !important;
     }
 </style>

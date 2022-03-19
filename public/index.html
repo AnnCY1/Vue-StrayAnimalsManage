@@ -13,29 +13,43 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
   </body>
-    <style>
+    <style lang="less">
       body{
         margin: 0px;
         padding: 0px;
+
       }
+
       .el-card__body{
-        width: 100%;
-        height: 100%;
-        display: grid;
-        grid-template-rows: 50% 30% 20%;
-        grid-template-columns: 33% 33% 33%;
-        grid-template-areas: "userImg userInfo userLv"
+          padding: 0px!important;
+        }
+        
+     /* elementUI 的卡片视图有两个容器 一个是 显式的 .el-card 在外层 一个是隐式的.el-card__body 在内层
+        对隐式的容器设置样式需要在index.html里面设置，不然不会生效 也不能只设置父容器的样式 也不会生效*/
+      .userCard>.el-card__body{
+          width:100%;
+          height:100%;
+          display: grid;
+          grid-template-rows: 50% 30% 20%;
+          grid-template-columns: 33% 33% 33%;
+          grid-template-areas: "userImg userInfo userLv"
                              "change1 change2 change3"
                              "date date date";
-        justify-items: center;
-        align-items: center;
-        padding: 0px!important;
-        
-    }
-    .el-table--scrollable-x .el-table__body-wrapper{
+          justify-items: center;
+          align-items: center;
+      }  
+     
+      .barCard>.el-card__body{
+          width: 100%;
+          height: 100%;
+      }
+
+    .el-table--scrollable-x div.el-table__body-wrapper{
         overflow: hidden;
       }
+   
    
     </style> 
     <!--  注意使用eleUI自带的边距是在index.html里面的body里引起的 不能在APP组件里面调整样式 -->

@@ -2,13 +2,13 @@
   <div class="main">
     <!-- 整个main区域二行，第一行三列，第二行两列 -->
     <el-row :gutter="40" class="row1">
-      <!-- 个人用户中心信息和表格 -->
+      <!-- 个人用户中心信息 -->
       <el-col :span="8">
         <div class="grid-content bg-purple r1c1">
           <el-card
             :body-style="{ padding: '20px' }"
             shadow="hover"
-            class="card"
+            class="userCard"
           >
             <img :src="userImg" class="image" />
             <div style="padding: 4px" class="middle">
@@ -68,52 +68,58 @@
         </div>
       </el-col>
 
+    <!--柱状图  周积分-->
       <el-col :span="6">
         <div class="grid-content r1c2">
-          <el-card shadow="hover"> 仪表盘 </el-card>
+          <el-card shadow="hover" class="barCard"> 
+            <my-echarts  :chartData = "this.weekPoints" :isBarChart="true"></my-echarts>
+           
+             </el-card>
         </div></el-col
       >
-
+    <!-- 饼状图  现有积分占比 -->
       <el-col :span="6">
         <div class="grid-content r1c3">
-          <el-card shadow="hover"> 仪表盘 </el-card>
+          <el-card shadow="hover">
+
+             <my-echarts  :chartData = "this.piePoints" :isBarChart="false"></my-echarts>
+
+          </el-card>
         </div>
       </el-col>
     </el-row>
 
     <el-row :gutter="40" class="row2">
-      <!-- 表格 -->
+       <!-- 表格 -->
       <el-col :span="8">
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column
-            v-for="(value, key) in tableLabel"
-            :key="key"
-            :prop="key"
-            :label="value"
-            width="180"
-          >
-          </el-table-column>
-        </el-table>
+        <commontable/>
       </el-col>
 
+      <!-- 折线图 -->
       <el-col :span="12">
-        <div class="grid-content bg-purple r3c1">折线图</div>
+        <div class="grid-content bg-purple r2c2">折线图</div>
       </el-col>
     </el-row>
+    
   </div>
 </template>
 
 <script>
-import Table from "../components/Table";
+import MyEcharts from '../components/Echarts.vue';
+import commontable from "../components/CommonTable.vue";
+
+
+
 
 let myDate = new Date();
-let currentDate =
-  myDate.toLocaleDateString() + " - " + myDate.toLocaleTimeString();
+let currentDate = myDate.toLocaleDateString() + " - " + myDate.toLocaleTimeString();
+  
 
 export default {
-  compoents: { Table },
+  components: { commontable ,MyEcharts },
   data() {
     return {
+      // 个人信息数据
       userImg: require("../assets/userIcon1.png"),
       date: currentDate,
       dialogDecoration: {
@@ -128,6 +134,8 @@ export default {
         Email: "",
       },
       formLabelWidth: "60px",
+
+      // 表格数据
       tableData: [
         {
           date: "2016-05-02",
@@ -170,6 +178,45 @@ export default {
         detail: "详情",
         points: "积分",
       },
+
+      // 周积分
+       weekPoints:{
+            // 标题名称
+            title: {
+                    text: '积分周表'
+                    },
+ 
+            // x轴数据
+            xAxis: {
+                       data: ['第一周', '第二周', '第三周', '第四周']
+                    },
+            // 图表种类数据 有几种柱子/有几种折线 (一种就一个对象) 数量分别是多少
+            series: [
+                    {
+                    name: '积分',
+                    type: 'bar',
+                    data: [5, 21, 16, 10]
+                    }
+                ]
+            },
+      // 积分占比
+        piePoints:{
+            title: {
+                    text: '积分占比'
+                    },
+            series: [
+                {
+                type: 'pie',
+                data: [
+                    { value: 20,name: '义工护理'}, 
+                    { value: 15,name: '上传轨迹'},
+                    { value: 3,name: '其他'}, 
+                    { value: 3,name: '其他'} 
+                ],
+                radius: ['20%', '50%']
+               }
+             ]
+        }
     };
   },
   computed: {
@@ -247,13 +294,11 @@ export default {
 }
 
 .r1c1 {
-  width: 100%;
+  width: 520px;
   height: 400px;
-  .card {
+  .userCard{
     width: 100%;
     height: 100%;
-    padding: 0px;
-
     .el-button + .el-button {
       margin: 0;
     }
@@ -302,11 +347,21 @@ export default {
 }
 
 .r1c2 {
-  height: 100%;
+ 
+  height: 400px;
+  .el-card{
+    width: 100%;
+    height: 100%;
+  }
+  
 }
 .r1c3 {
-  background-color: #bfa;
+
   height: 100%;
+  .el-card{
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .r2c1 {

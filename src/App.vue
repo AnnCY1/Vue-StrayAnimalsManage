@@ -15,12 +15,13 @@
       </el-header>
 
         <el-main>
+       
           <router-view></router-view>    
         </el-main>
 
       </el-container>
     </el-container>
-   <table/>
+  
   </div>
 </template>
 
@@ -28,31 +29,29 @@
 
 import Navigate from "./components/Navigate";
 import Header from "./components/Header";
-import table from "./components/Table.vue"
+
+
 
 
 
 export default {
   name: 'App',
-  components: {Navigate,Header,table},
+  components: {Navigate,Header},
   data(){
-    return{
-       tableData: [
-                {
-                date: "2016-05-02",
-                detail: "王小虎",
-                points: "+1",
-                },
-            ],
-            tableLabel:["日期","详情","积分"]
+    return{   
     }
   },
   methods:{
     show(){
       console.log("11");
     }
-  }
+  },
+   mounted(){
+    
+   }
 }
+
+
 </script>
 
 <style lang = "less" scoped>
