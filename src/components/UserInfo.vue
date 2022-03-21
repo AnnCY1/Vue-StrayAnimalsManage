@@ -65,6 +65,24 @@ export default {
   name: "UserInfo",
   data() {
     return {
+      formRules:{
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          {
+            validator: function(rule, value, callback) {
+              if (/^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(value) == false) {
+                callback(new Error("请输入邮箱"));
+              } else {
+                //校验通过
+                callback();
+              }
+            },
+            trigger: "blur"
+          }
+        ],
+        password:[]
+    },  
+
       // 个人信息数据
       userImg: require("../assets/userIcon1.png"),
       // 应该从服务器端获取 这里用浏览器的内存作为服务器了
@@ -87,49 +105,6 @@ export default {
       },
       formLabelWidth: "60px",
 
-      // 表格数据
-      tableData: [
-        {
-          date: "2016-05-02",
-          detail: "义工护理",
-          points: "+5",
-        },
-        {
-          date: "2016-05-02",
-          detail: "上传轨迹",
-          points: "+2",
-        },
-        {
-          date: "2016-05-02",
-          detail: "上传轨迹",
-          points: "+2",
-        },
-        {
-          date: "2016-05-02",
-          detail: "上传轨迹",
-          points: "+2",
-        },
-        {
-          date: "2016-05-02",
-          detail: "上传轨迹",
-          points: "+2",
-        },
-        {
-          date: "2016-05-02",
-          detail: "上传轨迹",
-          points: "+2",
-        },
-        {
-          date: "2016-05-02",
-          detail: "上传轨迹",
-          points: "+2",
-        },
-      ],
-      tableLabel: {
-        date: "日期",
-        detail: "详情",
-        points: "积分",
-      },
     };
   },
   computed: {
@@ -138,7 +113,21 @@ export default {
     },
   },
   methods: {
+
+  // 清空一下表单数据 防止多次修改个人信息时其他数据影响到本次修改
+    clearForm(){
+       this.form = {
+        newName: "",
+        oldPassword: "",
+        newPassword: "",
+        Email: localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) :"",
+      }
+    },
+    // 修改昵称的表单
     changeName() {
+      // 打开表单之前清空一下数据 
+      this.clearForm()
+
       // 因为input框的渲染是push进数组的，所以要先清空一下label
       this.dialogDecoration.label = [];
       this.dialogDecoration.title = "修改昵称";
@@ -149,14 +138,17 @@ export default {
       //   打开表单组件
       this.dialogFormVisible = true;
     },
+
+    // 修改密码的表单
     changePassword() {
+     this.clearForm()
+      
       this.dialogDecoration.label = [];
       this.dialogDecoration.title = "修改密码";
 
       // 打开表单之前把新旧密码给清空掉，这里清空的只是临时的数据
       // 其他的不用清空是因为其他的可以允许有记忆功能 密码则是需要安全功能
-      this.form.oldPassword = "";
-      this.form.newPassword = "";
+    
       this.dialogDecoration.label.push({
         name: "旧密码",
         formKey: "oldPassword",
@@ -165,11 +157,12 @@ export default {
         name: "新密码",
         formKey: "newPassword",
       });
-
-      console.log(this.dialogDecoration.label);
       this.dialogFormVisible = true;
     },
+
+    // 修改邮箱的表单
     changeEmail() {
+      this.clearForm()
       this.dialogDecoration.label = [];
       this.dialogDecoration.title = "绑定邮箱";
       
@@ -185,27 +178,34 @@ export default {
       if (this.form.newName) {
         // 1.提交表单数据到数据库中
         // 2.数据库数据变化 vue响应式进行改变
-        localStorage.setItem("userName", JSON.stringify(this.form.newName));
-        this.userName = this.form.newName;
+            localStorage.setItem("userName", JSON.stringify(this.form.newName));
+            this.userName = this.form.newName;
+            this.dialogFormVisible = false;
+            this.$alert('修改成功!',{type :'success'})
 
-        this.dialogFormVisible = false;
+      }else if(this.form.oldPassword && this.form.newPassword) {
+            let oldPassword = JSON.parse(localStorage.getItem("oldPassword"));
 
-      } else if (this.form.oldPassword && this.form.newPassword) {
-        let oldPassword = JSON.parse(localStorage.getItem("oldPassword"));
-        if (this.form.oldPassword === oldPassword) {
-          localStorage.setItem("password", this.form.newPassword);
-        } else {
-          alert("输入旧密码有误");
-        }
-      } else if (this.form.Email){
-          console.log('111')
-        localStorage.setItem("email", JSON.stringify(this.form.Email));
-
-        this.dialogFormVisible = false;
-      }
-      else{
-        this.dialogFormVisible = false;
-        alert("无效的修改")
+            if (this.form.oldPassword === oldPassword) {
+              localStorage.setItem("password", this.form.newPassword);
+              this.dialogFormVisible = false;
+              this.$alert('修改成功!',{type :'success'})
+            }else {
+               
+              this.$alert("输入旧密码有误",{type :'error'});
+            }
+      }else if(this.form.Email){
+           let reg = /^\w+@[\da-z\.-]+\.([a-z]{2,6}|[\u2E80-\u9FFF]{2,3})$/
+            if(reg.test(this.form.Email)){
+               localStorage.setItem("email", JSON.stringify(this.form.Email));
+               this.dialogFormVisible = false;
+               this.$alert('绑定成功',{type :'success'})
+            }else{
+               this.$alert('邮箱输入有误',{type :'warn'})
+            }
+      }else{
+           this.dialogFormVisible = false;
+           this.$alert('无效的修改',{type :'info'})
       }
     },
   },

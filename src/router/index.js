@@ -1,8 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Home from "../pages/Home.vue";
 import UserCenter from "../pages/UserCenter";
-import Login from "../components/Login"
+import AnimalInfo from "../pages/animalInfo.vue";
+import AnimalManage from "../pages/animalManage.vue";
+import Trail from "../pages/animalPath/Trail.vue"
+import TrailAnalysis from "../pages/animalPath/TrailAnalysis";
+import PathUpload from "../pages/doTings/pathUpload";
+import PictureUpload from "../pages/doTings/pictureUpload.vue"
+
+
+import Login from "../components/Login.vue"
 
 Vue.use(VueRouter)
 
@@ -21,7 +30,37 @@ const routes = [
         name:"login",
         path:"/login",
         component:Login
-    }
+    },
+    {
+        name:"animalInfo",
+        path:"/animalInfo",
+        component:AnimalInfo
+    },
+    {
+        name:"animalManage",
+        path:"/animalManage",
+        component:AnimalManage
+    },
+    {
+        name:"trail",
+        path:"/trail",
+        component:Trail
+    },
+    {
+        name:"trailAnalysis",
+        path:"/trailAnalysis",
+        component:TrailAnalysis
+    },
+    {
+        name:"pathUpload",
+        path:"/pathUpload",
+        component:PathUpload
+    },
+    {
+        name:"pictureUpload",
+        path:"/pictureUpload",
+        component:PictureUpload
+    },
     
 ]
 

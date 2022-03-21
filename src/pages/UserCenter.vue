@@ -77,7 +77,7 @@ export default {
   components: { CommonTable ,MyEcharts,UserInfo, },
   data() {
     return {
-      
+      name:"userCenter",
       // 周积分
        weekPoints:{
             // 标题名称

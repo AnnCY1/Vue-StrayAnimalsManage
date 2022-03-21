@@ -7,8 +7,10 @@
   <!-- 导航栏  由数据驱动 elementUI只是起到一个结构和样式的作用 -->
   <el-col :span="12">
       <!-- 没有子节点的用noChildren计算属性遍历 且点击事件传递的参数是Item -->
+
+      <!-- default-active="..." 是用户不点导航栏，默认激活的页面的下标 一般都是首页的下标 我改成个人中心了-->
     <el-menu
-      default-active="2"
+      default-active="/userCenter"
       class="el-menu-vertical-demo"
       background-color="#545c64"
       text-color="#fff"
@@ -16,27 +18,30 @@
     >
       <el-menu-item  
        @click.native = "bounce(item)"
-      v-for="(item,index) in noChildren" 
-      :index="`${index}`" 
+      v-for="(item,index) in noChildren"
+      :index="noChildren[index].path" 
       :key="noChildren[index].path">
         <i :class = "`${noChildren[index].icon}`"></i>
         <span slot="title">{{noChildren[index].label}}</span>
       </el-menu-item>
 
     <!-- 有子节点的用hasChildren遍历 且点击事件传递的参数是childItem -->
+
+    <!-- 父节点 -->
       <el-submenu 
       v-for="(item,index) in hasChildren" 
-      :index="`${index}`"  
+      :index="hasChildren[index].path"
       :key="hasChildren[index].path">
         <template slot="title">
           <i :class="hasChildren[index].icon"></i>
           <span>{{hasChildren[index].label}}</span>
         </template>
-
-        <el-menu-item-group @click.native = "bounce(childItem)" 
-        v-for="(childItem) in hasChildren[index].children"   
-        :key="childItem.path">
-          <el-menu-item  >{{childItem.label}}</el-menu-item> 
+    <!-- 子节点 -->
+        <el-menu-item-group>
+          <el-menu-item v-for="(childItem) in hasChildren[index].children"  
+          @click.native = "bounce(childItem)" 
+          :key="childItem.path"  
+          :index = "childItem.label">{{childItem.label}}</el-menu-item> 
         </el-menu-item-group>
       </el-submenu>
 
@@ -55,7 +60,7 @@ export default {
       
       menu: [
         {
-          name: "Home",
+          name: "home",
           label: "首页",
           path: "/",
           icon:"el-icon-menu",
@@ -148,14 +153,18 @@ export default {
       }
   },
   methods: {
+    // 点击导航除了通过路由访问页面之外，还要记录一下用户访问的历史信息
       bounce(item){
+        // 路由跳转
           this.$router.push({
               name:item.name,
               query:{
-                  id:1,
                   name:"温沐春"
               }
               })
+
+        // 通过vuex 来实现所有页面共用数据 共同操作数据
+         this.$store.commit("routeRegister",item) 
       }
   },
 };
