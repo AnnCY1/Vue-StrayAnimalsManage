@@ -13,8 +13,9 @@
 
           <!-- 这里使用作用域插槽 是为了方便拿到数据并进行展示 这里的父子关系是 el-table是父组件,el-table-cloumun是子组件 -->
             <template slot-scope="scope">
-            <!-- toSting是为了更好的展示数组 ，数组直接展示是 ['...','...']  把它转换成String形式的就好了-->
-                <span>{{ (scope.row[item.prop]).toString()   }}</span>
+            <!-- toString是为了更好的展示数组 ，数组直接展示是 ['...','...']  把它转换成String形式的就好了-->
+            <!-- null.toString会报错 所以这样写 -->
+                <span>{{ (scope.row[item.prop])? (scope.row[item.prop]).toString() : ''   }}</span>
             </template> 
 
           </el-table-column>
