@@ -1,33 +1,37 @@
 <template>
-    <div class="main">
-        <el-row :gutter="20">
-        <el-col :span="16"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
+    <div class="home">
+        <el-row :gutter="20" >
+                <el-col :span="5" v-for="(item,index) in animalShow" :key="item.id">
+                  <el-card shadow="hover">
+                    <div class="imgContainer">
+                      <img :src='animalShow[index].src' alt="动物萌照">
+                      <p>{{animalShow[index].name}}</p>
+                      </div>
+                    </el-card>
+                </el-col>
+              
         </el-row>
-        <el-row :gutter="20">
-        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-        </el-row>
-        <el-row :gutter="20">
-        <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="16"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-        </el-row>
-        
     </div>
 </template>
 
 <script>
+
     export default {
-        name:"Home"
-        
+        name:"Home",
+        data(){
+          return{
+            // 负责存放展示出来的照片 最多存放20张
+              animalShow:[
+              {id:1,name:'汤圆',src:require("../assets/ty01.jpeg")},{id:1,name:'汤圆',src:require("../assets/ty02.jpeg")},
+              {id:1,name:'汤圆',src:require("../assets/ty03.jpeg")},{id:1,name:'汤圆',src:require("../assets/ty04.jpeg")},
+              {id:1,name:'米线',src:require("../assets/mx01.jpeg")},{id:1,name:'米线',src:require("../assets/mx02.jpeg")}]
+          }
+        }
     }
 </script>
 
 <style lang = "less" scoped>
-    .el-row {
+ .el-row {
     margin-bottom: 20px;
     &:last-child {
       margin-bottom: 0;
@@ -36,21 +40,15 @@
   .el-col {
     border-radius: 4px;
   }
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
-  .bg-purple {
-    background: #d3dce6;
-  }
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-  }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
+  .home{
+     padding: 100px;
+     .imgContainer{
+        padding:10px;
+        text-align: center;
+        
+        img{
+           width: 90%;
+        }
+     }
   }
 </style>
