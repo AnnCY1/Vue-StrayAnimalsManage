@@ -18,17 +18,17 @@ Vue.use(VueRouter)
 const routes = [
     {
         name:"home",
-        path:"/",
+        path:"/home",
         component:Home,
     },
     {
         name:"userCenter",
-        path:"/useCenter",
+        path:"/userCenter",
         component:UserCenter
     },
     {
         name:"login",
-        path:"/login",
+        path:"/",
         component:Login
     },
     {

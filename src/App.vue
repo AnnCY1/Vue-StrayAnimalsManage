@@ -2,19 +2,23 @@
   <div id="app">
     <el-container class="wrap1" >
       <!-- 先引入布局container 再引入导航 -->
-        <el-aside width="200px" v-if="hadLogin">
+        <el-aside width="200px">
         <!-- 导航栏组件 -->
           <navigate/>
 
         </el-aside>
       <el-container class="wrap2">
-      <el-header class="headerWrap" v-if="hadLogin">
+        <!-- 头部区域 -->
+      <el-header class="headerWrap">
         
         <Header/>
         
       </el-header>
         <el-main>
-          <router-view></router-view>    
+          
+            <router-view></router-view> 
+               <!-- 登录组件 如果没有登录的话 个人中心页面就会要求用户登录 -->
+            <login  v-if="this.$route.path == '/userCenter' && !this.$store.state.userInfo.hadLogin" style="margin-left:-150px ;margin-top:-100px"/>  
         </el-main>
       </el-container>
 
@@ -27,23 +31,29 @@
 
 import Navigate from "./components/Navigate";
 import Header from "./components/Header";
+import Login from '@/components/Login.vue';
 
+import {mapState} from 'vuex';
 
 
 
 
 export default {
   name: 'App',
-  components: {Navigate,Header},
+  components: {Navigate,Header,Login},
   data(){
     return{   
-      hadLogin:true
+     
     }
   },
+  computed:{
+      ...mapState({hadLogin:'hadLogin'})
+  },
+
   methods:{
     logout(){
-      this.hadLogin = !this.hadLogin
-      if(this.hadLogin){
+      this.$store.commit('changeLoginState')
+      if(this.$store.state.hadLogin){
          this.$router.push({name:"userCenter"})
       }
     }
@@ -84,7 +94,7 @@ export default {
     padding: 0px;
     width: 100%;
     height: 100%;
-    background-color: white;
+    
   }
 }
  

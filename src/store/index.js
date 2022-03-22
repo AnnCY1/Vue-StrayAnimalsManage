@@ -15,9 +15,12 @@ const state = {
         },
     ],
     // 记录用户当前访问的页面 会以高亮显示
-    currentTag:null
+    currentTag:null,
 
-    
+    adminAccount:[{id:1,name:'温沐春',account:'admin',password:123456},
+                  {id:2,name:'张小龙',account:'123',password:123}],
+    isAdmin:false,
+    userInfo :{hadLogin:false,id:'',name:'',email:''}
 }
 
 const mutations = {
@@ -45,11 +48,25 @@ const mutations = {
     // 点关闭按钮可以删除这个历史记录
     deleteLog(state,index){
         state.routeLog.splice(index,1)
-    }
+    },
+    changeLoginState(state){
+        state.userInfo.hadLogin = !state.userInfo.hadLogin
+    },
+    logOut(state){
+        state.userInfo.hadLogin = false;
+        sessionStorage.removeItem('userInfo')
+        
+    },
+    // 用户登录成功和注册成功时 vuex要干的事是完全一样的
+    userRegister(state,userInput){
+
+        state.userInfo = userInput
+        sessionStorage.setItem('userInfo',JSON.stringify(userInput))
+        state.userInfo.hadLogin = true
+    },
+   
 
 }
-
-
 
 export default new Vuex.Store({
     actions,

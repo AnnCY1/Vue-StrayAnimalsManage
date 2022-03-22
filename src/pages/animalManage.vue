@@ -256,11 +256,13 @@ export default {
 
 <style lang = "less" scoped>
 .animalManage {
-  width: 1650px;
+  background: url(../assets/bg1.webp);
+  width: 1670px;
   height: 100%;
-  margin: 0 30px;
+  padding: 0 30px;
+  
   .manage-header {
-    margin-top: 50px;
+    padding-top: 50px;
     height: 50px;
     .search {
       width: 200px;

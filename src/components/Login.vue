@@ -2,37 +2,38 @@
   <div class="login-register">
     <div class="contain">
       <div class="big-box" :class="{ active: isLogin }">
-        <div class="big-contain" v-if="isLogin">
+         <div class="big-contain" v-if="isLogin">
+          <div class="btitle">创建账户</div>
+          <div class="bform">
+            <input type="text" placeholder="用户名" v-model="form.username" />
+            <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
+            <input type="text" placeholder="账号" v-model="form.useract" />
+            <input type="password" placeholder="密码" v-model="form.userpwd" />
+          </div>
+          <button class="bbutton" @click="register">注册</button>
+        </div>
+        <div class="big-contain" v-else>
           <div class="btitle">账户登录</div>
           <div class="bform">
-            <input type="email" placeholder="邮箱" v-model="form.useremail" />
-            <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
+            <input type="text" placeholder="账号" v-model="form.useract" />
+            <!-- <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span> -->
             <input type="password" placeholder="密码" v-model="form.userpwd" />
             <span class="errTips" v-if="emailError">* 密码填写错误 *</span>
           </div>
           <button class="bbutton" @click="login">登录</button>
         </div>
-        <div class="big-contain" v-else>
-          <div class="btitle">创建账户</div>
-          <div class="bform">
-            <input type="text" placeholder="用户名" v-model="form.username" />
-            <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-            <input type="email" placeholder="邮箱" v-model="form.useremail" />
-            <input type="password" placeholder="密码" v-model="form.userpwd" />
-          </div>
-          <button class="bbutton" @click="register">注册</button>
-        </div>
+       
       </div>
       <div class="small-box" :class="{ active: isLogin }">
         <div class="small-contain" v-if="isLogin">
           <div class="stitle">你好，朋友!</div>
           <p class="scontent">开始注册，和我们一起旅行</p>
-          <button class="sbutton" @click="changeType">注册</button>
+          <button class="sbutton" @click="changeType">登录</button>
         </div>
         <div class="small-contain" v-else>
           <div class="stitle">欢迎回来!</div>
           <p class="scontent">与我们保持联系，请登录你的账户</p>
-          <button class="sbutton" @click="changeType">登录</button>
+          <button class="sbutton" @click="changeType">注册</button>
         </div>
       </div>
     </div>
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import UserInfoVue from './UserInfo.vue';
 export default {
   name: "login",
   data() {
@@ -50,7 +52,7 @@ export default {
       existed: false,
       form: {
         username: "",
-        useremail: "",
+        useract: "",
         userpwd: "",
       },
     };
@@ -59,19 +61,53 @@ export default {
     changeType() {
       this.isLogin = !this.isLogin;
       this.form.username = "";
-      this.form.useremail = "";
+      this.form.useract = "";
       this.form.userpwd = "";
     },
     login() {
       const self = this;
-      if (self.form.useremail != "" && self.form.userpwd != "") {
-        this.$notify({
+    
+      if (self.form.useract != "" && self.form.userpwd != "") {
+        // every 或者 some find  方法不能返回自定义的值  forEach无返回值 map始终返回的是一个数组     而且想要获取它们的结果需要 return arr.some(...return XX...) 写两个return ！！！
+
+        // 其他组件调用mutation 语法是 this.$store.commit('mutationName',参数) mutation调用mutation是 this.commit(...)!
+        // mutations 的所有方法只能接收除state之外一个参数！ 多余的参数必须要用数组或者对象传过去！
+        // action 可以有返回值 而mutation不允许有返回值！！！ 
+        // JSON.stringify 不要乱用 在放到localStorage 的时候用一次就够了  在此之前最好不要用 
+       
+       let result =  this.confirmPwd()
+       if(result){
+         let res
+          let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+          let adminInfo = this.$store.state.adminAccount
+          for(let i=0;i<adminInfo.length;i++){
+              if(adminInfo[i].name == result)
+              {
+                 res = adminInfo[i]
+              }
+          }
+          for(let i=0;i<userInfo.length;i++){
+              if(userInfo[i].name == result)
+              {
+                 res =userInfo[i]
+              }
+          }
+          
+          
+         this.$store.commit('userRegister',res)
+          this.$notify({
           title: "登录成功",
-          message: "欢迎回来",
+          message: "欢迎您，" + result,
           offset: 100,
         });
-        this.$bus.$emit("logout");
-      } else {
+        
+       }else{
+         this.$message({
+          message: "账号或密码错误！",
+          type: "warning",
+        });
+       }
+      }else {
         alert("填写不能为空！");
       }
     },
@@ -79,16 +115,82 @@ export default {
       const self = this;
       if (
         self.form.username != "" &&
-        self.form.useremail != "" &&
+        self.form.useract != "" &&
         self.form.userpwd != ""
       ) {
-        alert("注册成功！");
+        let userInput = {id:'',name:self.form.username,account:self.form.useract,password:self.form.userpwd,email:'',
+                         data:[{getDate:new Date().toLocaleDateString,detail:'注册成功',value:1}]}
+        let userInfo =  []
+        if(!localStorage.getItem('userInfo')){
+          console.log('没有用户注册')
+          
+        }else{
+           userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        }
+        if(userInfo.length){
+          userInput.id = userInfo.length+1 
+        }else{
+          userInput.id = 1
+        }
+        
+        userInfo.push(userInput)
+        
+        localStorage.setItem('userInfo',JSON.stringify(userInfo))
+        this.$alert("注册成功！",{type:'success'});
+        this.$store.commit('userRegister',userInput)
       } else {
-        alert("填写不能为空！");
+        this.$alert("填写不能为空",{type:'warning'});
       }
     },
+     confirmPwd(){
+      //  先验证是不是管理员
+        let res1 = this.confirmAdmin()
+ 
+        if(res1){
+            this.$store.isAdmin = true
+            return res1
+        }else{
+          // 再验证是不是用户
+           let res2 = this.confirmUser()
+           if(res2){
+               this.$store.isAdmin = false
+               return res2
+           }else{
+               return false
+           }
+        }
+    },
+    confirmAdmin(){
+        let adminName = ''
+        let res =  this.$store.state.adminAccount.some((item)=>{
+                 adminName = item.name      
+                 return item.account == this.form.useract && item.password == this.form.userpwd
+        })
+        if(!res){ adminName = ''}
+       
+        return adminName
+    },
+    confirmUser(){
+        let theUserInfo = JSON.parse(localStorage.getItem('userInfo'))
+        
+        let userName = ''
+        if(theUserInfo){
+                let res = theUserInfo.some(user =>{
+                        userName = user.name
+                        return user.account == this.form.useract && user.password == this.form.userpwd
+                })
+            if(!res){ userName = '' }
+            return userName
+        }else{
+             return false
+        }
+    }
+
+
   },
-  mounted() {},
+  mounted() {
+    console.log()
+  },
 };
 </script>
 

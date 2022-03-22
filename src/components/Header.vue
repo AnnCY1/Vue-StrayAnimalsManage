@@ -53,8 +53,11 @@ import { mapState,mapMutations } from "vuex";
             }),
             // 登出按钮
             logout(){
-                this.$router.push({name:"login"})
-                this.$bus.$emit("logout")
+                this.$store.commit('logOut')
+                this.$message({
+                    message:"您已成功登出",
+                    type:'info'
+                })
             },
             // 个人中心
             toUserCenter(){

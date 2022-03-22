@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" v-if="this.$store.state.userInfo.hadLogin">
     <!-- 整个main区域二行，第一行三列，第二行两列 -->
     <el-row :gutter="40" class="row1">
       <!-- 个人用户中心信息 -->
@@ -44,7 +44,12 @@
               ></my-echarts>
         </el-card>
       </el-col>
+
+     
     </el-row>
+
+  
+
   </div>
 </template>
 

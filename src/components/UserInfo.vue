@@ -24,7 +24,7 @@
       >
 
       <el-dialog
-        :title="dialogDecoration.title"
+        :title="dialogDecoration.title "
         :visible.sync="dialogFormVisible"
         width="400px"
         height="400px"
@@ -65,33 +65,14 @@ export default {
   name: "UserInfo",
   data() {
     return {
-      formRules:{
-        email: [
-          { required: true, message: "请输入邮箱", trigger: "blur" },
-          {
-            validator: function(rule, value, callback) {
-              if (/^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(value) == false) {
-                callback(new Error("请输入邮箱"));
-              } else {
-                //校验通过
-                callback();
-              }
-            },
-            trigger: "blur"
-          }
-        ],
-        password:[]
-    },  
-
+     
       // 个人信息数据
       userImg: require("../assets/userIcon1.png"),
       // 应该从服务器端获取 这里用浏览器的内存作为服务器了
-      userName: localStorage.getItem("userName")
-        ? JSON.parse(localStorage.getItem("userName"))
-        : "默认昵称",
+      userName: JSON.parse(sessionStorage.getItem('userInfo')).name,
       date: currentDate,
       dialogDecoration: {
-        title: "undefined",
+        title: "未知",
         label: [],
       },
       dialogFormVisible: false,
@@ -101,10 +82,9 @@ export default {
         newName: "",
         oldPassword: "",
         newPassword: "",
-        Email: localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) :"",
+        Email: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')).email :"",
       },
       formLabelWidth: "60px",
-
     };
   },
   computed: {
@@ -113,14 +93,14 @@ export default {
     },
   },
   methods: {
-
+    
   // 清空一下表单数据 防止多次修改个人信息时其他数据影响到本次修改
     clearForm(){
        this.form = {
         newName: "",
         oldPassword: "",
         newPassword: "",
-        Email: localStorage.getItem('email') ? JSON.parse(localStorage.getItem('email')) :"",
+        Email: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')).email :"",
       }
     },
     // 修改昵称的表单
@@ -175,19 +155,46 @@ export default {
 
     // 点击确定会提交表单 触发这个事件
     submitForm() {
-      if (this.form.newName) {
+      if (this.form.newName.trim()) {
         // 1.提交表单数据到数据库中
         // 2.数据库数据变化 vue响应式进行改变
-            localStorage.setItem("userName", JSON.stringify(this.form.newName));
+            let userInfo = JSON.parse(localStorage.getItem("userInfo"))
+            
+            let theId = JSON.parse(sessionStorage.getItem('userInfo')).id
+                for(let i =0; i<userInfo.length;i++){
+                      if(userInfo[i].id === theId){
+                          userInfo[i].name = this.form.newName
+                          localStorage.setItem('userInfo',JSON.stringify(userInfo))
+                          this.$alert('更新完成',{type:'success'})
+                      }else(
+                         this.$alert('找不到数据',{type:'error'})
+                      )
+             } 
+
+            
             this.userName = this.form.newName;
             this.dialogFormVisible = false;
-            this.$alert('修改成功!',{type :'success'})
+            
 
       }else if(this.form.oldPassword && this.form.newPassword) {
-            let oldPassword = JSON.parse(localStorage.getItem("oldPassword"));
+
+            let oldPassword = JSON.parse(sessionStorage.getItem("userInfo")).password;
+            let theId = JSON.parse(sessionStorage.getItem('userInfo')).id
+
+            console.log(theId)
+
 
             if (this.form.oldPassword === oldPassword) {
-              localStorage.setItem("password", this.form.newPassword);
+              
+                let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+                for(let i=0;i<userInfo.length;i++){
+                   if(theId == userInfo[i].id){
+                      userInfo[i].password = this.form.newPassword
+                      localStorage.setItem('userInfo',JSON.stringify(userInfo))
+                      break
+                   }
+                }
+
               this.dialogFormVisible = false;
               this.$alert('修改成功!',{type :'success'})
             }else {
@@ -196,8 +203,18 @@ export default {
             }
       }else if(this.form.Email){
            let reg = /^\w+@[\da-z\.-]+\.([a-z]{2,6}|[\u2E80-\u9FFF]{2,3})$/
+
             if(reg.test(this.form.Email)){
-               localStorage.setItem("email", JSON.stringify(this.form.Email));
+              let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+              let theId = JSON.parse(sessionStorage.getItem('userInfo')).id
+               for(let i=0;i<userInfo.length;i++){
+                   if(theId == userInfo[i].id){
+                      userInfo[i].email = this.form.Email
+                      localStorage.setItem('userInfo',JSON.stringify(userInfo))
+                      break
+                   }
+                }
+
                this.dialogFormVisible = false;
                this.$alert('绑定成功',{type :'success'})
             }else{
@@ -209,6 +226,8 @@ export default {
       }
     },
   },
+  mounted(){
+  }
 };
 </script>
 
