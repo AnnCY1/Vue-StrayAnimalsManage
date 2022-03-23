@@ -1,6 +1,6 @@
 <template>
   <el-form ref="myForm" label-width="100px" :model="form" :inline= "inline">
-      <el-form-item v-for="item in formLabel" :key="item.name" :label="item.label">
+      <el-form-item v-for="item in propsFormLabel || formLabel " :key="item.name" :label="item.label">
             <el-input 
                         v-if="item.type == 'input'"   
                         :placeholder = "`请输入${item.label}`"

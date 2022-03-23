@@ -60,6 +60,7 @@ export default {
   },
    mounted(){
      this.$bus.$on("logout",this.logout)
+     sessionStorage.clear()
    },
    beforeDestory(){
      this.$bus.$on("logout")

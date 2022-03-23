@@ -3,15 +3,14 @@
      <baidu-map :center="center" :zoom="zoom" @ready='handler' class="trailMap"
                 :scroll-wheel-zoom="true">
 
-      <bm-marker :position="center" :dragging="true" @click="infoWindowOpen" class="bm-marker" title="汤圆">
-              <bm-info-window :show="isShow" @close="infoWindowClose" @open="infoWindowOpen" 
-                              class="bm-info" >汤圆</bm-info-window>
+      <bm-marker v-for="item in animalPoints" :key="item.id"  :position="item.position" :dragging="isAdmin" 
+      class="bm-marker" :title="item.name">
+             
       </bm-marker>
 
      </baidu-map>
   </div>
 </template>
-
 
 
 <script>
@@ -21,33 +20,34 @@ export default {
     name:"Trail",
     data(){
         return{
-            center: {lng: 0, lat: 0},
-            zoom: 3 ,
-            isShow:false,
-            // animalName:'汤圆'
+            center: {lng: 113.622444, lat: 34.754811},
+            zoom: 19,
+            
+            isAdmin:this.$store.state.isAdmin,
+            animalPoints:this.$store.state.animalPoints,
         }
     },
     methods: {
       handler ({BMap, map}) { 
-          let map3d = new BMap.Map("allmap")
+ 
             // 初始化地图,设置中心点坐标和地图级别
-          this.center.lng = 113.622444
-          this.center.lat = 34.754811
-          this.zoom = 19
+          // this.center.lng = 113.622444
+          // this.center.lat = 34.754811
+          // this.zoom = 19
 
-          console.log(map3d)
-
-
+            map.addEventListener('click', function (e) {
+                                console.log(e.point.lng, e.point.lat)
+                            })
          
       },
-      infoWindowClose(){
-         this.isShow = false
-      },
-      infoWindowOpen(){
-         this.isShow = true
-      },
+      addPoint(item){
+         this.animalPoints.push(item)
+      }
+     
   },
-   
+   mounted(){
+      this.$bus.$on('addPoint',this.addPoint)
+   }
     
 }
 </script>

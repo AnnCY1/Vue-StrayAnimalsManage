@@ -54,6 +54,7 @@ import { mapState,mapMutations } from "vuex";
             // 登出按钮
             logout(){
                 this.$store.commit('logOut')
+                this.bounce({name:'userCenter'})
                 this.$message({
                     message:"您已成功登出",
                     type:'info'

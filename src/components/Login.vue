@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import UserInfoVue from './UserInfo.vue';
+
 export default {
   name: "login",
   data() {
@@ -69,7 +69,8 @@ export default {
     
       if (self.form.useract != "" && self.form.userpwd != "") {
         // every 或者 some find  方法不能返回自定义的值  forEach无返回值 map始终返回的是一个数组     而且想要获取它们的结果需要 return arr.some(...return XX...) 写两个return ！！！
-
+        // for in 循环和 for of 循环固然可以自定义返回值 ，但是for循环是不能用变量直接接收的 必须要封装成一个函数，而且要万万小心：
+        //  for循环return 是会终止函数运行的 一般情况用break 和continue就行了 不要在for里面用return
         // 其他组件调用mutation 语法是 this.$store.commit('mutationName',参数) mutation调用mutation是 this.commit(...)!
         // mutations 的所有方法只能接收除state之外一个参数！ 多余的参数必须要用数组或者对象传过去！
         // action 可以有返回值 而mutation不允许有返回值！！！ 
