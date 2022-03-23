@@ -64,10 +64,26 @@ const routes = [
     
 ]
 
+
+
 const router  = new VueRouter({
     mode:"history",
     routes
 })
+
+
+router.beforeEach((to,from,next)=>{
+    
+    if( !router.app.$options.store.state.isAdmin && to.name ==='animalManage'){
+        alert('只有管理员才能进入哦')
+        console.log(router.app.$options.store.state.isAdmin)
+    }else{
+        next()
+    }
+  })
+
+
+
 
 export default router
 

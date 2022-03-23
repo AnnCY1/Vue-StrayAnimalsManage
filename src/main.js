@@ -22,6 +22,7 @@ Vue.use(BaiduMap, {
 })
 
 
+
 new Vue({
   router,//配置router！
   store,
@@ -31,3 +32,5 @@ new Vue({
 
   render: h => h(App),
 }).$mount('#app')
+
+

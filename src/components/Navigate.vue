@@ -38,7 +38,8 @@
         </template>
     <!-- 子节点 -->
         <el-menu-item-group>
-          <el-menu-item v-for="(childItem) in hasChildren[index].children"  
+          <el-menu-item v-for="(childItem) in hasChildren[index].children" 
+          
           @click.native = "bounce(childItem)" 
           :key="childItem.path"  
           :index = "childItem.label">{{childItem.label}}</el-menu-item> 
@@ -57,7 +58,7 @@
 export default {
   data() {
     return {
-      
+      isShow:this.$store.state.isAdmin,
       menu: [
         {
           name: "home",

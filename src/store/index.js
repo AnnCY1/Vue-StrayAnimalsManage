@@ -35,7 +35,15 @@ const mutations = {
             const result = state.routeLog.findIndex(index => index.name === item.name)
             // 如果没有,用户访问了一个真正的从未访问过的页面 那么就push一下 
             if(result === -1){
-                state.routeLog.push(item);
+                if(state.isAdmin == true){
+                    state.routeLog.push(item);
+                }else{
+                    if(item.name == 'animalManage'){
+                        // alert('只有管理员才能进入哦')
+                    }else{
+                        state.routeLog.push(item)
+                    }
+                }
             }
             // 否则就改变一下当前访问的页面的记录就行了 这一个在第一步就做了 所以不用再做了
 
@@ -55,7 +63,7 @@ const mutations = {
     logOut(state){
         state.userInfo.hadLogin = false;
         sessionStorage.removeItem('userInfo')
-        
+        state.isAdmin = false
     },
     // 用户登录成功和注册成功时 vuex要干的事是完全一样的
     userRegister(state,userInput){
@@ -64,7 +72,9 @@ const mutations = {
         sessionStorage.setItem('userInfo',JSON.stringify(userInput))
         state.userInfo.hadLogin = true
     },
-   
+   adminLogin(state){
+        state.isAdmin = true
+   }
 
 }
 

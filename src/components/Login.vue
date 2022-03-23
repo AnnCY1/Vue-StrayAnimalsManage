@@ -84,6 +84,7 @@ export default {
               if(adminInfo[i].name == result)
               {
                  res = adminInfo[i]
+                 this.$store.commit('adminLogin')
               }
           }
           for(let i=0;i<userInfo.length;i++){
@@ -92,7 +93,6 @@ export default {
                  res =userInfo[i]
               }
           }
-          
           
          this.$store.commit('userRegister',res)
           this.$notify({
