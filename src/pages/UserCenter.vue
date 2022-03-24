@@ -60,28 +60,14 @@ import UserInfo from '../components/UserInfo';
 
 // 柱状图 4周的数据源  写在data里echarts读不出来，不知道是不是执行顺序的原因 
 // 写在外面的缺点就是不能存储也不能响应式，通过localStorage可以存储，但是只有刷新才能响应
-let firstWeek = {
-  // 每个月的1-7号算第一周，7-14是第二周 xData就是series的data值 积分有变化就添加到这里面
-        date:7,
-        xData:JSON.parse(localStorage.getItem("xData1"))
-     },
-     secondWeek = {
-        date:14,
-        xData:JSON.parse(localStorage.getItem("xData2"))
-     },
-     thirdWeek = {
-        date:21,
-        xData:JSON.parse(localStorage.getItem("xData3"))
-     },
-     lastWeek = {
-        xData:JSON.parse(localStorage.getItem("xData4"))
-     }
+
      
 
 export default {
   components: { CommonTable ,MyEcharts,UserInfo, },
   data() {
     return {
+      
       name:"userCenter",
       // 周积分
        weekPoints:{
@@ -99,7 +85,7 @@ export default {
               {
                 name: '积分',
                 type: 'bar',
-                data: [firstWeek.xData, secondWeek.xData,thirdWeek.xData, lastWeek.xData]
+                data: [10,5 ,8, 8]
               }
                     ]
             },
@@ -127,7 +113,7 @@ export default {
                     text: '积分月报'
                     },
             xAxis: {
-              data: ['一月', '二月', '三月']
+              data: [1, 2, 3]
             },
            
             series: [
@@ -140,7 +126,41 @@ export default {
         }
     };
   },
+  mounted(){
 
+    // data里面的数据不能调用data的数据，但是可以提前给它赋值
+    let date = new Date()
+     let month = date.getMonth() + 1
+    //  console.log(month)
+    localStorage.getItem('xData1')
+    this.monthPoints.xAxis.data = [month-1+'月',month+'月',month+1+'月']
+    let weekData = [];
+    // xData1 是第一周的总积分  xData2 是第二周的总积分
+    weekData.push(localStorage.getItem('xData1'))
+    weekData.push(localStorage.getItem('xData2'))
+    weekData.push(localStorage.getItem('xData3'))
+    weekData.push(localStorage.getItem('xData4'))
+    console.log(weekData)
+    this.weekPoints.series[0].data = weekData
+
+    // 也可以用下面这种方式：
+  //   let firstWeek = {
+  // // 每个月的1-7号算第一周，7-14是第二周 xData就是series的data值 积分有变化就添加到这里面
+  //       date:7,
+  //       xData:JSON.parse(localStorage.getItem("xData1"))
+  //    },
+  //    secondWeek = {
+  //       date:14,
+  //       xData:JSON.parse(localStorage.getItem("xData2"))
+  //    },
+  //    thirdWeek = {
+  //       date:21,
+  //       xData:JSON.parse(localStorage.getItem("xData3"))
+  //    },
+  //    lastWeek = {
+  //       xData:JSON.parse(localStorage.getItem("xData4"))
+  //    }
+  }
  
  
 };
