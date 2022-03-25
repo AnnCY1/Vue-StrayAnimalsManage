@@ -32,7 +32,9 @@
     <el-row :gutter="40" class="row2">
       <!-- 表格 -->
       <el-col :span="8">
-        <common-table />
+        <common-table   
+        :propsTableData="currentUserPoints"
+        :propsTableLabel="tableLabel" />
       </el-col>
 
       <!-- 折线图 -->
@@ -67,7 +69,10 @@ export default {
   components: { CommonTable ,MyEcharts,UserInfo, },
   data() {
     return {
-      
+      currentUserPoints: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')).points : [],
+      tableLabel:[{label:"日期",prop:"date"},
+                  {label:"详情",prop:"detail"},
+                  {label:"积分",prop:"points"}],
       name:"userCenter",
       // 周积分
        weekPoints:{
@@ -97,12 +102,7 @@ export default {
             series: [
                 {
                 type: 'pie',
-                data: [
-                    { value: 20,name: '义工护理'}, 
-                    { value: 15,name: '上传轨迹'},
-                    { value: 3,name: '其他'}, 
-                    { value: 3,name: '其他'} 
-                ],
+                data: [{value:1,name:'注册'},{value:10,name:'上传轨迹'}],
                 radius: ['20%', '50%']
                }
              ]
@@ -127,39 +127,68 @@ export default {
     };
   },
   mounted(){
-
+    this.$bus.$on('userLogin',this.getCurrentUserInfo)
     // data里面的数据不能调用data的数据，但是可以提前给它赋值
-    let date = new Date()
-     let month = date.getMonth() + 1
-    //  console.log(month)
-    localStorage.getItem('xData1')
-    this.monthPoints.xAxis.data = [month-1+'月',month+'月',month+1+'月']
-    let weekData = [];
-    // xData1 是第一周的总积分  xData2 是第二周的总积分
-    weekData.push(localStorage.getItem('xData1'))
-    weekData.push(localStorage.getItem('xData2'))
-    weekData.push(localStorage.getItem('xData3'))
-    weekData.push(localStorage.getItem('xData4'))
-    console.log(weekData)
-    this.weekPoints.series[0].data = weekData
 
-    // 也可以用下面这种方式：
-  //   let firstWeek = {
-  // // 每个月的1-7号算第一周，7-14是第二周 xData就是series的data值 积分有变化就添加到这里面
-  //       date:7,
-  //       xData:JSON.parse(localStorage.getItem("xData1"))
-  //    },
-  //    secondWeek = {
-  //       date:14,
-  //       xData:JSON.parse(localStorage.getItem("xData2"))
-  //    },
-  //    thirdWeek = {
-  //       date:21,
-  //       xData:JSON.parse(localStorage.getItem("xData3"))
-  //    },
-  //    lastWeek = {
-  //       xData:JSON.parse(localStorage.getItem("xData4"))
-  //    }
+
+    // 先获取当前用户的信息
+    
+
+    // 表格数据的展示 在data里面已经准备好了 
+   
+
+    // 积分月报 的时间调整
+    let currentDate = new Date()
+    let month = currentDate.getMonth() + 1
+    this.monthPoints.xAxis.data = [month-1+'月',month+'月',month+1+'月']
+
+    // 积分周报的数据调整  localStorage中有xData1234 这4个数据 存放的是 当前用户的积分
+
+    // 得到当前用户的总积分
+    let totalPoints = this.currentUserPoints
+
+    // 修改xData 1234 让其与用户行为一一对应
+
+     // xData1 是第一周的总积分  xData2 是第二周的总积分
+    let xData1 = 0
+    let xData2 = 0
+    let xData3 = 0
+    let xData4 = 0
+
+    for (let item of totalPoints){
+       if(item.date.substring(7) <=7){
+             xData1 += item.points
+       }
+       else if(item.date.substring(7) <=13){
+             xData2 += item.points
+       }
+       else if(item.date.substring(7) <=19){
+             xData3 += item.points
+       }
+       else{
+             xData4 += item.points
+       }
+    }
+    // console.log(xData4)  从sessionStorage中得到的数据 来修正xData的值 并传给柱状图和饼状图
+   
+   
+
+    // 让柱状图通过props接收这个数据
+    this.weekPoints.series[0].data[0] = xData1
+    this.weekPoints.series[0].data[1] = xData2
+    this.weekPoints.series[0].data[2] = xData3
+    this.weekPoints.series[0].data[3] = xData4
+
+
+    // 积分占比数据调整  还未调整
+   
+
+   
+  },
+  methods:{
+      getCurrentUserInfo(){
+        this.currentUserPoints = JSON.parse(sessionStorage.getItem('userInfo')).points
+      }
   }
  
  

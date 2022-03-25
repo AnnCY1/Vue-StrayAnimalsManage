@@ -24,6 +24,7 @@ export default {
       default() {
         // 至少要传过来一个xAxis对象和series数组 并由对象将他们俩包裹
         return {
+          tooltip: {},
           xAxis: {
             type:"false",
             data: ["x轴名称1", "x轴名称2"],
@@ -101,7 +102,9 @@ export default {
         // 如果数据发生变化了，再绘制一遍图表
         // 新建一个promise对象 防止在Dom出现之前 echarts就已经执行了初始化操作
         let p = new Promise((resolve) => {
-          resolve();
+          setTimeout(()=>{
+             resolve();
+          },100)
         });
         //然后异步执行echarts的初始化函数
         p.then(() => {

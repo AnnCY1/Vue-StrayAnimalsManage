@@ -94,8 +94,9 @@ export default {
                  res =userInfo[i]
               }
           }
-          
          this.$store.commit('userRegister',res)
+         this.$bus.$emit('userLogin')
+
           this.$notify({
           title: "登录成功",
           message: "欢迎您，" + result,
@@ -120,7 +121,7 @@ export default {
         self.form.userpwd != ""
       ) {
         let userInput = {id:'',name:self.form.username,account:self.form.useract,password:self.form.userpwd,email:'',
-                         data:[{getDate:new Date().toLocaleDateString,detail:'注册成功',value:1}]}
+                         points:[{date:new Date().toLocaleDateString(),detail:'注册成功',points:1}]}
         let userInfo =  []
         if(!localStorage.getItem('userInfo')){
           console.log('没有用户注册')

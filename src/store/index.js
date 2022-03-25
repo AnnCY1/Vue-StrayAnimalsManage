@@ -84,7 +84,33 @@ const mutations = {
    },
     // 用户分数变化
    userPoint(){
-     
+       let up = {
+           date: new Date().toLocaleDateString(),
+           detail:'上传轨迹',
+           points:3
+       }
+       let totalUserInfo = JSON.parse(localStorage.getItem('userInfo'))
+
+    //    先得到当前用户  便于使用他的id  顺便把session的数据改了
+       let currentUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+       currentUserInfo.points.push(up)
+       sessionStorage.setItem('userInfo',JSON.stringify(currentUserInfo))
+
+       
+        // 再用for in 循环  把用户的积分给改变了 然后再上传到locaStorage中
+      for (let index in totalUserInfo){
+           if(totalUserInfo[index].id == currentUserInfo.id){
+
+                totalUserInfo[index].points.push(up)
+                console.log(totalUserInfo)
+                localStorage.setItem('userInfo',JSON.stringify(totalUserInfo))
+                break
+           }
+      }
+
+      
+
+
    },
     // 添加轨迹点
     addPoint(state,item){
@@ -98,22 +124,38 @@ const mutations = {
              state.animalPoints.push(item)
              localStorage.setItem('animalPoints',JSON.stringify(state.animalPoints))
         }
+        
+        this.commit('userPoint')
 
     },
     // 删除轨迹点
     deletePoint(state,item){
-        console.log(111)
+        
 
         let res
-        for(let val of state.animalPoints){
-             if(val.id === item.id){
-                 res = val.id
-                 break
+        
+        for(let index in state.animalPoints){
+
+            // console.log(typeof(index))  注意 这个for in 循环的index是string类型的 
+            // 得到要删除的标记的下标
+             if(state.animalPoints[index].id === item.id){
+                 res = index
              }
         }
-        res =res - 1
-        
+
         state.animalPoints.splice(res,1)
+
+        for(let i in state.animalPoints){
+            // 删除一个标记后要把所有标记的id重置一遍
+            if(state.animalPoints[i].id > res){
+                 state.animalPoints[i].id = (state.animalPoints[i].id-1)
+            }
+        }
+        // 先在state里面删除
+        
+        
+
+        // 再上传到数据库中
         localStorage.setItem('animalPoints',JSON.stringify(state.animalPoints))
 
 

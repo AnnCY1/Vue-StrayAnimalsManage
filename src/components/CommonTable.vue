@@ -2,12 +2,12 @@
 <div class="tableWrap">
     <!-- table不显示可能是因为版本问题 或者是因为宽高未定义，我这里是因为父容器使用了absolute定位 table就不见了 -->
     <!-- 如果父组件给common-table传值了，那么就用props里面的，如果没有 那么就用自己的 -->
-  <el-table :data="propsTableData||tableData" >
+  <el-table :data="propsTableData" >
 
       <!-- v-for循环一个对象，value对应属性值，key对应键名（属性名） -->
       <!-- v-for循环一个数组 value对应属性值,index对应下标 -->
           <el-table-column  align="center"  show-overflow-tooltip
-          v-for="(item,index) in (propsTableLabel || tableLabel)" 
+          v-for="(item,index) in propsTableLabel" 
           :key= "index" :prop="item.prop" 
           :label="item.label" :width="item.width || '180px'">
 
@@ -78,35 +78,11 @@
            
            tableData: [
                {
-                date: "2022-05-02",
-                detail: "义工护理",
-                points: "+5",
+                date: "我是时间",
+                detail: "我是说明信息",
+                points: "我是加的分数",
                },
-                {
-                date: "2016-05-02",
-                detail: "上传轨迹",
-                points: "+2",
-                },
-                {
-                date: "2016-05-02",
-                detail: "上传轨迹",
-                points: "+2",
-                },
-                {
-                date: "2016-05-02",
-                detail: "上传轨迹",
-                points: "+2",
-                },
-                {
-                date: "2016-05-02",
-                detail: "上传轨迹",
-                points: "+2",
-                },
-                {
-                date: "2016-05-02",
-                detail: "上传轨迹",
-                points: "+2",
-                },
+               
             ],
             // 每一列的列名    prop是el-table需要的一个属性，el-table通过键名来获取到相应的数据  所以prop要与真实数据的键名一致            
             tableLabel:[{label:"日期",prop:"date"},
@@ -124,6 +100,9 @@
         changePage(){
             console.log(1);
         },
+    },
+    mounted(){
+        //  console.log(this.propsTableData)
     }
    
 };
