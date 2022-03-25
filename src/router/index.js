@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 
 import Home from "../pages/Home.vue";
 import UserCenter from "../pages/UserCenter";
-import AnimalInfo from "../pages/animalInfo.vue";
+import School3D from "../pages/School3D.vue";
 import AnimalManage from "../pages/animalManage.vue";
 import Trail from "../pages/animalPath/Trail.vue"
 import TrailAnalysis from "../pages/animalPath/TrailAnalysis";
@@ -32,9 +32,9 @@ const routes = [
         component:Login
     },
     {
-        name:"animalInfo",
-        path:"/animalInfo",
-        component:AnimalInfo
+        name:"school3d",
+        path:"/school3d",
+        component:School3D
     },
     {
         name:"animalManage",
@@ -76,7 +76,6 @@ router.beforeEach((to,from,next)=>{
     
     if( !router.app.$options.store.state.isAdmin && to.name ==='animalManage'){
         alert('只有管理员才能进入哦')
-        console.log(router.app.$options.store.state.isAdmin)
     }else{
         next()
     }

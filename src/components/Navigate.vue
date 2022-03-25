@@ -82,9 +82,9 @@ export default {
           url: "",
         },
         {
-          name: "animalInfo",
-          label: "统计信息",
-          path: "/animalInfo",
+          name: "school3d",
+          label: "3D校园",
+          path: "/school3d",
           icon:"el-icon-document",
           url: "",
         },

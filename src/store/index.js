@@ -142,7 +142,7 @@ const mutations = {
                  res = index
              }
         }
-
+        console.log(state.animalPoints[res].name)
         state.animalPoints.splice(res,1)
 
         for(let i in state.animalPoints){
